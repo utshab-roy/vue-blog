@@ -57,7 +57,11 @@ export default {
 
             try {
                 const response = await axios.post('login', formData)
-                console.log(response.data)
+
+                // user is logged in successfully
+                // store the access token in the local storages
+                localStorage.setItem('access_token', response.data.access_token)
+                // console.log(response.data.access_token)
             } catch (err) {
                 // Handle Error Here
                 console.error(err)
