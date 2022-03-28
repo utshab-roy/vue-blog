@@ -12,7 +12,7 @@
                     <label for="username" class="form-label">Username</label>
                     <input
                         id="username"
-                        v-model="formValues.username"
+                        v-model="formValue.username"
                         type="username"
                         class="form-control"
                     />
@@ -21,7 +21,7 @@
                     <label for="password" class="form-label">Password</label>
                     <input
                         id="password"
-                        v-model="formValues.password"
+                        v-model="formValue.password"
                         type="password"
                         class="form-control"
                     />
@@ -38,24 +38,31 @@ export default {
     name: 'LoginPage',
     data() {
         return {
-            formValues: {
+            formValue: {
                 username: '',
                 password: '',
-            },
-            posts: [],
+            }
         }
     },
     methods: {
         submitForm() {
+            /**
+             * converting vue data to form-data in order to create successful post request 
+             */
+            let formData = new FormData()
+
+            for (let key in this.formValue) {
+                formData.append(key, this.formValue[key])
+            }
+
             axios
-                .post('http://localhost:8080/api/login', this.formValues)
+                .post('http://localhost:8080/api/login', formData) // {headers: {'Content-Type': 'multipart/form-data'}}
                 .then((response) => {
                     console.log('Response Data', response.data)
                 })
                 .catch((error) => {
                     console.log(error)
                 })
-            console.log('Form values', this.formValues)
         },
     },
 }
