@@ -41,13 +41,13 @@ export default {
             formValue: {
                 username: '',
                 password: '',
-            }
+            },
         }
     },
     methods: {
-        submitForm() {
+        async submitForm() {
             /**
-             * converting vue data to form-data in order to create successful post request 
+             * converting vue data to form-data in order to create successful post request
              */
             let formData = new FormData()
 
@@ -55,14 +55,13 @@ export default {
                 formData.append(key, this.formValue[key])
             }
 
-            axios
-                .post('http://localhost:8080/api/login', formData) // {headers: {'Content-Type': 'multipart/form-data'}}
-                .then((response) => {
-                    console.log('Response Data', response.data)
-                })
-                .catch((error) => {
-                    console.log(error)
-                })
+            try {
+                const response = await axios.post('login', formData)
+                console.log(response.data)
+            } catch (err) {
+                // Handle Error Here
+                console.error(err)
+            }
         },
     },
 }
