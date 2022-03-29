@@ -33,8 +33,19 @@ export default {
         }
     },
     async created() {
-        const response = await axios.get('users')
-        this.userData = response.data
+        /**
+         * we are sending the headers here explicitly because 
+         * saving the token in axios.defaults.headers.common['Authorization'] needs a little time
+         * the rest of the request we will use this axios headers function
+         */
+        if (localStorage.getItem('access_token')) {
+            const response = await axios.get('users', {
+                headers: {
+                    Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+                },
+            })
+            this.userData = response.data
+        }
     },
 }
 </script>
