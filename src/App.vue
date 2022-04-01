@@ -10,19 +10,16 @@ function logoutHandler() {
     console.log("logout");
 }
 
-// return logoutHandler
-
-
-
 </script>
 
 <template>
     <header>
-        <div class="wrapper">
+        <div class="container">
             <nav>
                 <RouterLink to="/">Home</RouterLink>||
                 <RouterLink to="/about">About</RouterLink>||
                 <RouterLink to="/login">Login</RouterLink>||
+                <RouterLink :to="{ name: 'user-create' }">Create User</RouterLink>||
                 <button class="btn btn-info" @click="logoutHandler">Logout</button>
             </nav>
         </div>
