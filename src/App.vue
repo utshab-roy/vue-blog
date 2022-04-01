@@ -14,18 +14,36 @@ function logoutHandler() {
 
 <template>
     <header>
-        <div class="container">
-            <nav>
-                <RouterLink to="/">Home</RouterLink>||
-                <RouterLink to="/about">About</RouterLink>||
-                <RouterLink to="/login">Login</RouterLink>||
-                <RouterLink :to="{ name: 'user-create' }">Create User</RouterLink>||
-                <button class="btn btn-info" @click="logoutHandler">Logout</button>
-            </nav>
-        </div>
-    </header>
+        <nav class="navbar navbar-expand navbar-light bg-light">
+            <div class="container-fluid">
+                <RouterLink class="navbar-brand" to="/">BLOG</RouterLink>
 
-    <RouterView />
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <RouterLink class="nav-link active" to="/about">About</RouterLink>
+                    </li>
+                    <li class="nav-item">
+                        <RouterLink class="nav-link" to="/login">Login</RouterLink>
+                    </li>
+                    <li class="nav-item">
+                        <RouterLink class="nav-link" :to="{ name: 'user-create' }">Create</RouterLink>
+                    </li>
+                </ul>
+                <li class="nav-item d-flex">
+                    <button class="btn btn-info" @click="logoutHandler">Logout</button>
+                </li>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <RouterView />
+    </div>
 </template>
 
-<style></style>
+<style>
+.router-link-active {
+    background-color: lightblue;
+    cursor: pointer;
+    font-weight: bold;
+}
+</style>
