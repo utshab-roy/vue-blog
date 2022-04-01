@@ -1,10 +1,4 @@
 <template>
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-        crossorigin="anonymous"
-    />
     <table v-if="userData" class="table">
         <thead>
             <tr>
@@ -44,7 +38,19 @@ export default {
                     Authorization: 'Bearer ' + localStorage.getItem('access_token'),
                 },
             })
-            this.userData = response.data
+                .then(response => {
+                    // handle success
+                    this.userData = response.data
+                    console.log(response);
+                })
+                .catch(error => {
+                    if (error.response) {
+                        console.log('DATA', error.response.data);
+                        console.log('STATUS', error.response.status);
+                        console.log('HEADERS', error.response.headers);
+                    }
+                })
+
         }
     },
 }
