@@ -11,25 +11,28 @@
         <router-link class="cursor-pointer" :to="{ name: 'Home' }"
           >Home</router-link
         >
-        <router-link class="cursor-pointer" :to="{ name: 'Register' }"
+        <router-link v-if="user" class="cursor-pointer" :to="{ name: '' }"
           >Create</router-link
         >
-        <router-link class="cursor-pointer" :to="{ name: 'Login' }"
+        <router-link v-if="!user" class="cursor-pointer" :to="{ name: 'Login' }"
           >Login</router-link
         >
-        <li @click="logout" class="cursor-pointer">Logout</li>
+        <li v-if="user" @click="logout" class="cursor-pointer">Logout</li>
       </ul>
     </nav>
   </header>
 </template>
 
 <script>
+import { computed } from "vue";
 import { useRoute } from "vue-router";
+import store from "../store";
 import { supabase } from "../supabase/init";
 
 export default {
   setup() {
     // Get user from store
+    const user = computed(() => store.state.user);
 
     // Setup ref to router
     const router = useRoute();
@@ -39,7 +42,7 @@ export default {
       await supabase.auth.signOut();
       router.push({ name: "Home" });
     };
-    return { logout };
+    return { logout, user };
   },
 };
 </script>
