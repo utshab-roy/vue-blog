@@ -49,7 +49,76 @@
 
         <!-- Strength Training Inputs -->
         <div v-if="workoutType === 'strength'" class="flex flex-col gap-y-4">
-          <div class="flex flex-col gap-x-6"></div>
+          <div
+            class="flex flex-col gap-x-6 gap-y-2 relative md:flex-row"
+            v-for="(item, index) in exercises"
+            :key="index"
+          >
+            <div class="flex flex-col md:w-1/3">
+              <label for="exercise-name" class="mb-1 text-sm text-at-green"
+                >Exercise</label
+              >
+              <input
+                type="text"
+                required
+                class="p-2 w-full text-grey-500 focus:outline-none"
+                v-model="item.exercise"
+              />
+            </div>
+            <div class="flex flex-col flex-1">
+              <label for="sets" class="mb-1 text-sm text-at-green">Sets</label>
+              <input
+                type="text"
+                required
+                class="p-2 w-full text-grey-500 focus:outline-none"
+                v-model="item.sets"
+              />
+            </div>
+            <div class="flex flex-col flex-1">
+              <label for="reps" class="mb-1 text-sm text-at-green">Reps</label>
+              <input
+                type="text"
+                required
+                class="p-2 w-full text-grey-500 focus:outline-none"
+                v-model="item.reps"
+              />
+            </div>
+            <div class="flex flex-col flex-1">
+              <label for="weight" class="mb-1 text-sm text-at-green"
+                >Weight (LB's)</label
+              >
+              <input
+                type="text"
+                required
+                class="p-2 w-full text-grey-500 focus:outline-none"
+                v-model="item.weight"
+              />
+            </div>
+            <img
+              src="@/assets/images/trash-light-green.png"
+              class="h-4 w-auto absolute -left-5 cursor-pointer"
+              alt=""
+            />
+          </div>
+          <button
+            type="button"
+            class="
+              mt-6
+              py-2
+              px-6
+              rounded-sm
+              self-start
+              text-sm text-white
+              bg-at-light-green
+              duration-200
+              border-solid border-2 border-transparent
+              hover:border-at-light-green
+              hover:bg-white
+              hover:text-at-light-green
+            "
+          >
+            Add Exercise
+          </button>
         </div>
       </form>
     </div>
@@ -65,7 +134,7 @@ export default {
     // Create data
     const workoutName = ref("");
     const workoutType = ref("select-workout");
-    const exercise = ref([]);
+    const exercises = ref([1]);
     const statusMsg = ref(null);
     const errorMsg = ref(null);
 
@@ -73,11 +142,11 @@ export default {
 
     // Delete exercise
 
-    // Listens for chaging of workout type input
+    // Listens for changing of workout type input
 
     // Create workout
 
-    return { workoutName, workoutType, exercise, statusMsg, errorMsg };
+    return { workoutName, workoutType, exercises, statusMsg, errorMsg };
   },
 };
 </script>
