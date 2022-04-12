@@ -36,6 +36,7 @@
           </label>
 
           <select
+            @change="workoutChange"
             id="workout-type"
             class="p-2 text-gray-500 focus:outline-none"
             required
@@ -95,12 +96,14 @@
               />
             </div>
             <img
+              @click="deleteExercise(item.id)"
               src="@/assets/images/trash-light-green.png"
               class="h-4 w-auto absolute -left-5 cursor-pointer"
               alt=""
             />
           </div>
           <button
+            @click="addExercise"
             type="button"
             class="
               mt-6
@@ -143,7 +146,9 @@
               </select>
             </div>
             <div class="flex flex-col flex-1">
-              <label for="distance" class="mb-1 text-sm text-at-green">Distance</label>
+              <label for="distance" class="mb-1 text-sm text-at-green"
+                >Distance</label
+              >
               <input
                 type="text"
                 required
@@ -152,7 +157,9 @@
               />
             </div>
             <div class="flex flex-col flex-1">
-              <label for="duration" class="mb-1 text-sm text-at-green">Duration</label>
+              <label for="duration" class="mb-1 text-sm text-at-green"
+                >Duration</label
+              >
               <input
                 type="text"
                 required
@@ -161,9 +168,7 @@
               />
             </div>
             <div class="flex flex-col flex-1">
-              <label for="pace" class="mb-1 text-sm text-at-green"
-                >Pace</label
-              >
+              <label for="pace" class="mb-1 text-sm text-at-green">Pace</label>
               <input
                 type="text"
                 required
@@ -172,12 +177,14 @@
               />
             </div>
             <img
+              @click="deleteExercise(item.id)"
               src="@/assets/images/trash-light-green.png"
               class="h-4 w-auto absolute -left-5 cursor-pointer"
               alt=""
             />
           </div>
           <button
+            @click="addExercise"
             type="button"
             class="
               mt-6
@@ -197,6 +204,23 @@
             Add Exercise
           </button>
         </div>
+        <button
+          type="submit"
+          class="
+            mt-6
+            py-2
+            px-6
+            rounded-sm
+            self-start
+            text-sm text-white
+            bg-at-light-green
+            duration-200
+            border-solid border-2 border-transparent
+            hover:border-at-light-green hover:bg-white hover:text-at-light-green
+          "
+        >
+          Record Workout
+        </button>
       </form>
     </div>
   </div>
@@ -204,26 +228,75 @@
 
 <script>
 import { ref } from "vue";
-
+import { uid } from "uid";
 export default {
   name: "create",
   setup() {
     // Create data
     const workoutName = ref("");
     const workoutType = ref("select-workout");
-    const exercises = ref([1]);
+    const exercises = ref([]);
     const statusMsg = ref(null);
     const errorMsg = ref(null);
 
     // Add exercise
+    const addExercise = () => {
+      if (workoutType.value === "strength") {
+        exercises.value.push({
+          id: uid(),
+          exercise: "",
+          sets: "",
+          reps: "",
+          weight: "",
+        });
+        return;
+      }
+
+      // we have only two option so if it is not strength then it will be cardio
+      exercises.value.push({
+        id: uid(),
+        cardioType: "",
+        distance: "",
+        duration: "",
+        pace: "",
+      });
+    };
 
     // Delete exercise
+    const deleteExercise = (id) => {
+      // we will only delete exercise if there is at least 2 exercise on the list
+      if (exercises.value.length > 1) {
+        exercises.value = exercises.value.filter(
+          (exercise) => exercise.id !== id
+        );
+        return;
+      }
+      // if the exercises is not more than 1 then we will print an error message
+      errorMsg.value =
+        "Error: cannot remove, need to have at least one exercise";
+      setTimeout(() => {
+        errorMsg.value = false;
+      }, 3000);
+    };
 
     // Listens for changing of workout type input
+    const workoutChange = () => {
+      exercises.value = []; // setting it back to initial state on changing workout type
+      addExercise(); // this will generate initial input field according to workoutType
+    };
 
     // Create workout
 
-    return { workoutName, workoutType, exercises, statusMsg, errorMsg };
+    return {
+      workoutName,
+      workoutType,
+      exercises,
+      statusMsg,
+      errorMsg,
+      addExercise,
+      workoutChange,
+      deleteExercise,
+    };
   },
 };
 </script>
