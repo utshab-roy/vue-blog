@@ -229,6 +229,7 @@
 <script>
 import { ref } from "vue";
 import { uid } from "uid";
+import { supabase } from '../supabase/init';
 export default {
   name: "create",
   setup() {
@@ -286,6 +287,21 @@ export default {
     };
 
     // Create workout
+    const createWorkout = async () => {
+
+      try {
+        const {  error } = await supabase
+          .from("workouts")
+          .insert([{ some_column: "someValue", other_column: "otherValue" }]);
+        
+      } catch (error) {
+        errorMsg.value = `Error: ${error.message}`;
+        setTimeout(() => {
+          errorMsg.value = false
+        }, 3000);
+      }
+
+    };
 
     return {
       workoutName,
