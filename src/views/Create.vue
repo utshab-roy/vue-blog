@@ -12,7 +12,7 @@
     <!-- create -->
     <div class="p-8 flex items-start bg-light-grey rounded-md shadow-lg">
       <!-- form -->
-      <form class="flex flex-col gap-y-5 w-full">
+      <form @submit.prevent="createWorkout" class="flex flex-col gap-y-5 w-full">
         <h1 class="text-2xl text-at-light-green">Record Workout</h1>
 
         <!-- Workout Name -->
@@ -229,7 +229,7 @@
 <script>
 import { ref } from "vue";
 import { uid } from "uid";
-import { supabase } from '../supabase/init';
+import { supabase } from "../supabase/init";
 export default {
   name: "create",
   setup() {
@@ -288,19 +288,28 @@ export default {
 
     // Create workout
     const createWorkout = async () => {
-
       try {
-        const {  error } = await supabase
-          .from("workouts")
-          .insert([{ some_column: "someValue", other_column: "otherValue" }]);
-        
+        const { error } = await supabase.from("workouts").insert([
+          {
+            workoutName: workoutName.value,
+            workoutType: workoutType.value,
+            exercises: exercises.value,
+          },
+        ]);
+        if (error) throw error;
+        statusMsg.value = `Success: workout Created`;
+        workoutName.value = null;
+        workoutType.value = "select-workout";
+        exercises.value = [];
+        setTimeout(() => {
+          statusMsg.value = false;
+        }, 5000);
       } catch (error) {
         errorMsg.value = `Error: ${error.message}`;
         setTimeout(() => {
-          errorMsg.value = false
-        }, 3000);
+          errorMsg.value = false;
+        }, 5000);
       }
-
     };
 
     return {
@@ -312,6 +321,7 @@ export default {
       addExercise,
       workoutChange,
       deleteExercise,
+      createWorkout
     };
   },
 };
